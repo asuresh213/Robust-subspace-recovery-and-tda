@@ -27,25 +27,28 @@ def make_data_plane(num_pure, num_noise):
     noise = np.array([t0*np.array([2,3,-1]) for t0 in t])
     data = np.concatenate((pure, noise), axis = 0)
     return [data]
-    
+
 # Building data for srsr
-def make_srsr_data(num_pure, num_noise, frac):
-    num_plane_pure = int(frac*num_pure)
-    num_plane_noise = int(frac*num_noise)
-    num_circ_pure = num_pure-num_plane_pure
-    num_circ_noise = num_noise-num_plane_noise
-    data_plane = make_data_plane(num_plane_pure, num_plane_noise)
-    data_circ = make_data_sphere(num_circ_pure, num_circ_noise)
-    data = [data_plane, data_circ]
+def make_srsr_data(num_pure, num_noise):
+    if(int(np.sqrt(num_pure))**2 != num_pure):
+        print("number of pure data points needs to be a square for this particular example to to work!")
+        return None, None
+    data_plane = make_data_plane(num_pure, num_noise)
+    data_circ = make_data_sphere(num_pure, num_noise)
+    data = [data_plane[0], data_circ[0]]
     return data
+
+
 
 # Visualization helper
 def show_point_cloud(data, labels):
+    colors = ['red', 'blue']
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    for d, label in zip(data, labels):
-        for d0 in d[label==0]:
-            ax.scatter(*d0, color='blue')
-        for d0 in d[label==1]:
-            ax.scatter(*d0, color='red')
+    for k in range(len(data)):
+        for d0 in data[k][labels==0]:
+            ax.scatter(*d0, color=colors[k], marker='o')
+        for d0 in data[k][labels==1]:
+            ax.scatter(*d0, color=colors[k], marker='^')
     plt.show()
+

@@ -129,19 +129,12 @@ class RSR:
     
     def generate_labels(self, data, shrunk_subsp):
         Y = np.dot(shrunk_subsp, shrunk_subsp.T)
-        idxs = []
-        for j in range(self.m):
-            idx = []
-            for i in range(1,self.n+1):
-                Ii = range((i-1)*self.D, i*self.D)
-                for r in Ii:
-                    if(not np.isclose(Y[r][r], 0)):
-                        idx.append(i-1)
-                        break 
-            idxs.append(idx)
-        labels = np.array([[1 if i in idxs[j] else 0 for i in range(len(data[j]))] for j in range(len(idxs))])
+        idx = []
+        for i in range(1,self.n+1):
+            Ii = range((i-1)*self.D, i*self.D)
+            for r in Ii:
+                if(not np.isclose(Y[r][r], 0)):
+                    idx.append(i-1)
+                    break 
+        labels = np.array([1 if i in idx else 0 for i in range(len(data[0]))])
         return labels
-
-
-
-
