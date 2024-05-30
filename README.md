@@ -72,4 +72,4 @@ For the last part of this demo, we consider the two families of data points cons
 
 Download and run `demo.py` to reproduce the results listed above. Follow similar layout to conduct your own data explorations. 
 
-Algorithm P from the key paper involves constructing huge matrices whose dimensions scale linearly with the number of data ooints. Further optimization to speed up algorithm P from the SRSR paper is required. The existing code already takes advantage of the sparsity of these matrices, but can certainly be improved upon.
+Algorithm P from the key paper involves constructing huge matrices whose dimensions scale linearly with the number of data points. Further optimization to speed up algorithm P from the SRSR paper is required. The existing code already takes advantage of the sparsity of these matrices, but can certainly be improved upon.
