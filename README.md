@@ -47,9 +47,9 @@ The second part of the demo illustrates the use of RSR in conjunction with persi
   <img src="./imgs/noisy_homologies.png" width="400" /> 
 </p>
 
-A data point away from the diagonal line indicates the potential existence of a "hole" of that dimension in our data, and its distance from the diagonal indicates the magnitude of that potential. 
+A note on reading persistence diagrams: For dimensions $\geq 1$, a point away from the diagonal line indicates the potential existence of a "hole" of that dimension in our data, while its distance from the diagonal indicates the magnitude of that potential. Zero dimensional homology indicates the connectedness of our data. In our case - the singular red dot signifying a data point "at infinity" indicates the persistence of one connected component.
 
-Alternatively, running our data first through the RSR machine, extracting the points contained in the RSR solution, and then generating the persistence diagrams from the clean data, yields the following diagrams:
+For the second part of this demo, we run our data first through the RSR machine, extracting the points contained in the RSR solution, and then generating the persistence diagrams from the clean data. This yields the following diagrams:
 
 <p align="middle">
   <img src="./imgs/rsrtda_labelled.png" width="300" />
@@ -70,6 +70,6 @@ For the last part of this demo, we consider both families of data points (from p
 
 # Usage and future work:
 
-Download and run `demo.py` to reproduce the results listed above. Note: For illustration purposes, the num_pure variable in `demo.py` only admits a perfect squre number.
+Download and run `demo.py` to reproduce the results listed above. Note: For illustration purposes, the num_pure variable in `demo.py` only admits a perfect squre number. Following the same layout should allow for the usage of user-defined data.
 
 Algorithm P from the key paper involves constructing and inverting huge (singular) matrices whose dimensions scale linearly with the number of data points. The existing code already takes advantage of the sparsity of these matrices while constructing them. However, improvements can be made to avoid (pseudo-)inverting these matrices -- thereby allowing for faster performance and reduced numerical errors. Future work might also include GPU support to further speed up these methods. 
