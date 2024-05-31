@@ -21,7 +21,7 @@ Understandably, when the data $\mathcal{X}$ is corrupted by higher dimensional n
 
 # The code: 
 
-The `srsr_helper.py` contains an SRSR class which when given the point cloud $\mathcal{X}$ (written as a sequence of np arrays, one for each $\mathcal{X}_i \in \mathbb{R}^{d_i}$) initializes the set up for algorithm P presented in the key paper. Running `SRSR.algP()` returns a $\mathrm{corank}(B)$ shrunk subspace. The class function `SRSR.generate_labels()` takes the shrunk subspace (along with the original data) to generate labels that distinguishes points contained in the lower dimensional subspaces $L_i$.
+The `srsr_helper.py` contains an SRSR class which when given the point cloud $\mathcal{X}$ (written as a sequence of np arrays, one for each $\mathcal{X}_i \in \mathbb{R}^{d_i}$) initializes the set up for algorithm P presented in the key paper. Running `SRSR.algP()` returns a $\mathrm{corank}(B)$ shrunk subspace. The class function `SRSR.generate_labels()` takes the shrunk subspace (along with the original data) to generate labels that distinguish points contained in the lower dimensional subspaces $L_i$.
 
 The `tda_helper.py` contains methods that perform homology computations on the data. This is done primarily by utilizing a tda library [Teaspoon](https://github.com/teaspoontda/teaspoon) developed and maintained by [Liz Munch](https://elizabethmunch.com/) from Michigan State University. The particular teaspoon functions we use for persistence homology computations utilize the [RIPSER.py](https://ripser.scikit-tda.org/en/latest/) library which wraps around the "blazingly fast" C++ RIPSER package.
 
