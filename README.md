@@ -9,7 +9,7 @@ Given a point cloud $\mathcal{X} \in \mathbb{R}^D$, the Robust Subspace Recovery
 
 ### Simultaneous RSR:
 
-[This key paper](https://arxiv.org/abs/2003.02962) outlines a quiver based approach for Simultaneous RSR. We mean simultaneous in the following sense: Suppose we have point clouds $\mathcal{X}_1 \in \mathbb{R}^{d_1}, \dots, \mathcal{X}_m \in \mathbb{R}^{d_m}$ - which can now be concatenated to form a much higher dimensional point cloud $\mathcal{X} = [\mathcal{X}_1, \dots, \mathcal{X}_m] \in \mathbb{R}^D$ with $D = d_1+\dots+d_m$. The SRSR problem aims to analyze the joint point cloud $\mathcal{X}$ to, in one fell sweep, find a sequence of linear subspaces $(L_1,\dots, L_m)$ such that each $L_i$ is an RSR solution for $\mathcal{X}_i$. More details about this quiver based approach can be found in the paper above.  
+[This key paper](https://arxiv.org/abs/2003.02962) outlines a quiver based approach for *Simultaneous* RSR. We mean simultaneous in the following sense: Given point clouds $\mathcal{X}_1 \in \mathbb{R}^{d_1}, \dots, \mathcal{X}_m \in \mathbb{R}^{d_m}$ - we can now concatenate them to form a much higher dimensional point cloud $\mathcal{X} = [\mathcal{X}_1, \dots, \mathcal{X}_m] \in \mathbb{R}^D$ with $D = d_1+\dots+d_m$. The SRSR problem aims to analyze the joint point cloud $\mathcal{X}$ to, in one fell sweep, find a sequence of linear subspaces $(L_1,\dots, L_m)$ such that each $L_i$ is an RSR solution for $\mathcal{X}_i$. More details about this quiver based approach can be found in the paper above.  
 
 ### TDA overview:
 
