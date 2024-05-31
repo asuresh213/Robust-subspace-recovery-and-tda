@@ -1,6 +1,6 @@
 import numpy as np
 import tda_helper as tda
-import rsr_helper as rsr
+import srsr_helper as srsr
 import examples as ex 
 
 num_samples = 49 # num points from true data
@@ -12,7 +12,7 @@ dummy_labels = np.zeros(num_samples + num_noise) # for initial visualization
 
 data = ex.make_data_plane(num_samples, num_noise) # generate synthetic data
 ex.show_point_cloud(data, dummy_labels) # visualizing unlabelled point cloud
-ss = rsr.RSR(data, epsilon) # initialize 
+ss = srsr.SRSR(data, epsilon) # initialize 
 shrunk_subsp = ss.algP() # Run algorithm P
 labels = ss.generate_labels(data, shrunk_subsp) # label points
 ex.show_point_cloud(data, labels) # visualizing labelled point cloud
@@ -26,7 +26,7 @@ ex.show_point_cloud(data, dummy_labels) # visualizing unlabelled point cloud
 diagrams = tda.generate_persistence_diagrams(data[0], R) # use ripser to generate persistence diags
 tda.draw_persistence_diagrams(diagrams) # displaying persistence diagrams
 
-ss = rsr.RSR(data, epsilon) # initialize 
+ss = srsr.SRSR(data, epsilon) # initialize 
 shrunk_subsp = ss.algP() # Run algorithm P
 labels = ss.generate_labels(data, shrunk_subsp) # label points
 ex.show_point_cloud(data, labels) # visualizing labelled point cloud
@@ -40,7 +40,7 @@ tda.draw_persistence_diagrams(clean_diagrams) # displaying cleaner persistence d
 data = ex.make_srsr_data(num_samples, num_noise)
 ex.show_point_cloud(data, dummy_labels) # visualizing unlabelled point cloud
 
-ss = rsr.RSR(data, 0.1)
+ss = srsr.SRSR(data, 0.1)
 shrunksub = ss.algP()
 labels = ss.generate_labels(data, shrunksub)
 ex.show_point_cloud(data, labels) # visualizing labelled point cloud

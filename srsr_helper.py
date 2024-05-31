@@ -7,7 +7,7 @@ np.random.seed(1200)
 random.seed(1)
 
 
-class RSR:
+class SRSR:
     def __init__(self, data, epsilon):
         self.data = data
         self.epsilon = epsilon 
