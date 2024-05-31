@@ -70,6 +70,6 @@ For the last part of this demo, we consider both families of data points (from p
 
 # Usage and future work:
 
-Download and run `demo.py` to reproduce the results listed above. Note: For illustration purposes, the $\texttt{num\_pure}$ variable in `demo.py` should always be a perfect squre number.
+Download and run `demo.py` to reproduce the results listed above. Note: For illustration purposes, the num_pure variable in `demo.py` only admits a perfect squre number.
 
 Algorithm P from the key paper involves constructing and inverting huge (singular) matrices whose dimensions scale linearly with the number of data points. The existing code already takes advantage of the sparsity of these matrices while constructing them. However, improvements can be made to avoid (pseudo-)inverting these matrices -- thereby allowing for faster performance and reduced numerical errors. Future work might also include GPU support to further speed up these methods. 
