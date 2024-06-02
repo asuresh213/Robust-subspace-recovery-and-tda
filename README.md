@@ -1,4 +1,4 @@
-# (Simultaneous) Robust Subspace Recovery + Applications to TDA 
+# (Simultaneous) Robust Subspace Recovery + Applications to Topological Data Analysis 
 
 This project was done to supplement the final oral presentation portion of my comprehensive exams.
 
