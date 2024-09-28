@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Building the data for tda-rsr
-def make_data_sphere(num_pure, num_noise):
+def make_data_circle(num_pure, num_noise):
     angles = [np.pi*(np.random.uniform(0, 2)) for _ in range(num_pure)]
     pure = np.array([[np.cos(angle), np.sin(angle), 0.0] for angle in angles])
     angle_noise = [[np.pi*(np.random.uniform(0, 2)), np.pi*(np.random.uniform(0, 1))] for _ in range(num_noise)]
@@ -28,17 +28,37 @@ def make_data_plane(num_pure, num_noise):
     data = np.concatenate((pure, noise), axis = 0)
     return [data]
 
+def make_data_sphere(num_pure, num_noise):
+    angles = np.array([[2*np.pi*np.random.rand(), 2*np.pi*np.random.rand()] for _ in range(num_pure+num_noise)])
+    pure = np.array([[np.sin(angle[0])*np.cos(angle[1]), 
+                      np.sin(angle[0])*np.sin(angle[1]), 
+                      np.cos(angle[0])] for angle in angles[:num_pure]])
+    noise = np.array([np.random.rand()*np.array([np.sin(angle[0])*np.cos(angle[1]), 
+                      np.sin(angle[0])*np.sin(angle[1]), 
+                      np.cos(angle[0])]) for angle in angles[num_pure+1:]])
+    data = np.concatenate((pure, noise), axis = 0)
+    return [data]
+
+def make_data_tori(num_pure, num_noise):
+    angles = np.array([[2*np.pi*np.random.rand(), 2*np.pi*np.random.rand()] for _ in range(num_pure+num_noise)])
+    pure = np.array([[(3+np.cos(angle[1]))*np.cos(angle[0]),
+                      (3+np.cos(angle[1]))*np.sin(angle[0]), 
+                      np.sin(angle[1])] for angle in angles[:num_pure]])
+    noise = np.array([np.array([(np.random.rand()*3 + np.cos(angle[1]))*np.cos(angle[0]),
+                      (np.random.rand()*3+np.cos(angle[1]))*np.sin(angle[0]), 
+                      np.sin(angle[1])]) for angle in angles[num_pure+1:]])
+    data = np.concatenate((pure, noise), axis = 0)
+    return [data]
+
 # Building data for srsr
 def make_srsr_data(num_pure, num_noise):
     if(int(np.sqrt(num_pure))**2 != num_pure):
         print("number of pure data points needs to be a square for this particular example to to work!")
         return None, None
     data_plane = make_data_plane(num_pure, num_noise)
-    data_circ = make_data_sphere(num_pure, num_noise)
+    data_circ = make_data_circle(num_pure, num_noise)
     data = [data_plane[0], data_circ[0]]
     return data
-
-
 
 # Visualization helper
 def show_point_cloud(data, labels):
@@ -51,4 +71,3 @@ def show_point_cloud(data, labels):
         for d0 in data[k][labels==1]:
             ax.scatter(*d0, color=colors[k], marker='^')
     plt.show()
-

@@ -19,15 +19,24 @@ Topological Data Analysis (TDA) is an up and coming discipline in data science, 
 
 Understandably, when the data $\mathcal{X}$ is corrupted by higher dimensional noise (as is the case in the premise of the (S)RSR problem), running TDA schemes on it could cause unwanted higher dimensional homologies to show up in our analysis, which could misinform our model. Therefore, one could create an (S)RSR-TDA pipeline, where we refine our data $\mathcal{X}$ by recovering a lower dimensional subspace that eradicates these higher dimensional corrputions, and then running TDA analysis on the truncated data. In addition to allowing for dimenison reduction, this also refines the output of our TDA scheme that is now unbothered by higher dimensional noise, thereby resolving the phantom homologies that would have shown up otherwise.  
 
+### (Topological) Machine learning with Giotto 
+
+Since persistence homologies capture topological information of the underlying data, it is worth thinking about ``vectorizing" these persistence diagrams, and using these vectorizations as input to a machine learning model. Often times, these vectorizations produce input feature matrices that have a considerable reduction in dimension/size, with comparable performance as that of contemporary machine learning models aiming to perform a similar classification/regression task by using the data $\mathcal{X}$ directly. 
+
+
 # The code: 
 
-The `srsr_helper.py` contains an SRSR class which when given the point cloud $\mathcal{X}$ (written as a sequence of np arrays, one for each $\mathcal{X}_i \in \mathbb{R}^{d_i}$) initializes the set up for algorithm P presented in the key paper. Running `SRSR.algP()` returns a $\mathrm{corank}(B)$ shrunk subspace. The class function `SRSR.generate_labels()` takes the shrunk subspace (along with the original data) to generate labels that distinguish points contained in the lower dimensional subspaces $L_i$.
+The `srsr_helper.py` file contains an SRSR class which when given the point cloud $\mathcal{X}$ (written as a sequence of np arrays, one for each $\mathcal{X}_i \in \mathbb{R}^{d_i}$) initializes the set up for algorithm P presented in the key paper. Running `SRSR.algP()` returns a $\mathrm{corank}(B)$ shrunk subspace. The class function `SRSR.generate_labels()` takes the shrunk subspace (along with the original data) to generate labels that distinguish points contained in the lower dimensional subspaces $L_i$.
 
-The `tda_helper.py` contains methods that perform homology computations on the data. This is done primarily by utilizing a tda library [Teaspoon](https://github.com/teaspoontda/teaspoon) developed and maintained by [Liz Munch](https://elizabethmunch.com/) from Michigan State University. The particular teaspoon functions we use for persistence homology computations utilize the [RIPSER.py](https://ripser.scikit-tda.org/en/latest/) library which wraps around the "blazingly fast" C++ RIPSER package.
+The `tda_helper.py` file contains methods that perform homology computations on the data. This is done primarily by utilizing a tda library [Teaspoon](https://github.com/teaspoontda/teaspoon) developed and maintained by [Liz Munch](https://elizabethmunch.com/) from Michigan State University. The particular teaspoon functions we use for persistence homology computations utilize the [RIPSER.py](https://ripser.scikit-tda.org/en/latest/) library which wraps around the "blazingly fast" C++ RIPSER package.
 
-The `examples.py` contains custom methods that generate synthetic data for demo purposes.
+The `generate_data.py` file contains custom methods that generate synthetic data for demo purposes.
 
-The `demo.py` does the thing it says it is trying to do.
+The `_demo_SubspaceRecovery.py` illustrates the recovery of lower dimensional subspaces using (S)RSR and using it to resolve phantom homologies in TDA.
+
+The `_demo_TopMLwithGiotto.py` file illustrates the usage of the robust tda library [Giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) to do homology computations on synthetically generated point clouds $\mathcal{X}$ corresponding to four different shapes. Subsequently these diagrams are vectorized via the so called `PersistenceEntropy` function. Finally these vectorizations are used as input features in random forest classifier, which classifies our data with a 100\% out-of-bag accuracy.
+
+The `_demo_TopMLwithGiotto.ipynb` is a python notebook of the above file that can be run online. 
 
 # Results:
 
@@ -68,8 +77,13 @@ For the last part of this demo, we consider both families of data points (from p
   <img src="./imgs/srsr_resolved.png" width="300" />
 </p>
 
+
+### Topological Machine Learning with Giotto
+
+We sample point clouds from four different manifolds embedded in $\mathbb{r}^3$: a circle, a sphere, a torus and a plane. The machine learning pipeline is able to classify their corresponding persistence entropies with a 100\% out-of-bag accuracy. The whole process is outlined in the file [TopMLwithGiotto.pdf](/TopMLwithGiotto.pdf) which is an excerpt of my response to a question in doctoral comprehensive exam on Topological Data Analysis.
+
 # Usage and future work:
 
-Download and run `demo.py` to reproduce the results listed above. Note: For illustration purposes, the num_pure variable in `demo.py` only admits a perfect squre number when generating srsr (demo 3) data. Following the same layout should allow for the usage of user-defined data.
+Download and run the demo files to reproduce the results listed above. Note: For illustration purposes, the num_pure variable in `demo.py` only admits a perfect squre number when generating srsr (demo 3) data. Following the same layout should allow for the usage of user-defined data.
 
 This implementation of Algorithm P from the key paper involves constructing and (pseudo-)inverting a huge singular matrix $B$ whose dimensions scale linearly with the number of data points. The existing code already takes advantage of the sparsity of this matrix while constructing it. However, improvements can be made to avoid (pseudo-)inverting this matrix altogether -- thereby allowing for faster performance and reduced numerical errors. Future work might also include GPU support to further speed up the process. 

@@ -20,7 +20,7 @@ ex.show_point_cloud(data, labels) # visualizing labelled point cloud
 #----------------------- RSR with TDA demo ------------------------------------
 
 R = 1 if num_noise == 0 else 2 # max homology dimension
-data = ex.make_data_sphere(num_samples, num_noise) # generate synthetic data
+data = ex.make_data_circle(num_samples, num_noise) # generate synthetic data
 ex.show_point_cloud(data, dummy_labels) # visualizing unlabelled point cloud
 
 diagrams = tda.generate_persistence_diagrams(data[0], R) # use ripser to generate persistence diags
