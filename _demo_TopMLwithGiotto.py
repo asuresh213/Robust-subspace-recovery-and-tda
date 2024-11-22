@@ -8,6 +8,12 @@ from gtda.diagrams import PersistenceEntropy
 import matplotlib.pyplot as plt
 from gtda.plotting import plot_diagram
 from sklearn.ensemble import RandomForestClassifier
+from openml.datasets.functions import get_dataset
+from gtda.diagrams import Amplitude, NumberOfPoints
+from sklearn.pipeline import make_union
+from gtda.pipeline import Pipeline 
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def make_point_clouds(n_samples_per_shape: int, n_points: int, noise: float):
     """Make point clouds for circles, spheres, and tori with random noise.
@@ -117,3 +123,69 @@ plot_point_cloud(X).show()
 rf = RandomForestClassifier(oob_score=True)
 rf.fit(X, labels)
 print(f"OOB score: {rf.oob_score:.3f}")
+
+# Real life data
+df = get_dataset('shapes').get_data(dataset_format='dataframe')[0]
+df.head()
+plot_point_cloud(df.query('target == "human_arms_out3"')[["x", "y", "z"]].values)
+point_clouds = np.asarray(
+    [
+        df.query("target == @shape")[["x", "y", "z"]].values
+        for shape in df["target"].unique()
+    ]
+)
+point_clouds.shape
+persistence = VietorisRipsPersistence(
+    metric="euclidean",
+    homology_dimensions=homology_dimensions,
+    n_jobs=6,
+    collapse_edges=True,
+)
+persistence_diagrams = persistence.fit_transform(point_clouds)
+persistence_entropy = PersistenceEntropy(normalize=True)
+# Calculate topological feature matrix
+X = persistence_entropy.fit_transform(persistence_diagrams)
+# Visualise feature matrix
+plot_point_cloud(X)
+labs = np.zeros(40)
+labs[10:20] = 1
+labs[20:30] = 2
+labs[30:] = 3
+
+rf = RandomForestClassifier(oob_score=True, random_state=400)
+rf.fit(X, labs)
+print(rf.oob_score_)
+
+
+# Improving the model
+metrics = [
+    {"metric": metric}
+    for metric in ["heat", "betti", "bottleneck", "wasserstein", "landscape"]
+]
+
+
+feature_union = make_union(
+    PersistenceEntropy(normalize=True),
+    NumberOfPoints(),
+    *[Amplitude(**metric) for metric in metrics]
+)
+
+p = Pipeline(
+    [
+        ("features", feature_union),
+        ("rf", RandomForestClassifier(oob_score=True, random_state=42)),
+    ]
+)
+p.fit(persistence_diagrams, labs)
+p["rf"].oob_score_
+
+
+# Finding the best features
+feature_types = ["PE", "NP", "heat", "betti", "bottleneck", "wasserstein", "landscape"]
+feature_names = [type + str(i) for type in feature_types for i in homology_dimensions]
+importances = p["rf"].feature_importances_
+forest_importances = pd.Series(importances, index=feature_names)
+fig, ax = plt.subplots()
+forest_importances.plot.bar(ax=ax)
+fig.tight_layout()
+
