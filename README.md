@@ -1,6 +1,15 @@
 # (Simultaneous) Robust Subspace Recovery + Applications to Topological Data Analysis 
 
-This project was done to supplement the final oral presentation portion of my comprehensive exams.
+This project was done to supplement the final oral presentation portion of my comprehensive exams. There is a more comprehensive outline and motivation for the project below - but we start with a TL;WR (Too Long; Wont Read).
+
+# TL;WR
+
+The goal of this project is two-fold:
+  1. Given multiple point clouds $\mathcal{X}^i \in \mathbb{R}^{d_i}$, recover a tuple of linear subspaces $T_i \subseteq \mathbb{R}^{d_i}$ *simultaneously* in one fell sweep so that each $T_i$ contains "enough" points of $\mathcal{X}^i$. 
+
+  2. Use the above recovery scheme in conjunction with topological data analysis, to first recover prominent subspaces contained in our data before doing homological computations - thereby eradicating phantom homologies that might arise otherwise due to higher dimenisonal noise. 
+
+In [this demo](./_demo_SubspaceRecovery.py) we illustrate the interplay of these methods in eradicating phantom homologies. For the more important question as to why this is important and/or relevant, [this python notebook](./_demo_TopMLwithGiotto.ipynb) illustrates an instance of topological machine learning which levarages the usage of homological computations in conjunction with machine learning. In particular, this notebook illustrates how pre-processing our data via these topological methods could reduce the dimensionality of the input feature matrix for the classifier by an order of **ten** (for real world data, and **hundred** for synthetic data).
 
 # Background:
 
@@ -34,7 +43,7 @@ The `generate_data.py` file contains custom methods that generate synthetic data
 
 The `_demo_SubspaceRecovery.py` illustrates the recovery of lower dimensional subspaces using (S)RSR and using it to resolve phantom homologies in TDA.
 
-The `_demo_TopMLwithGiotto.py` file illustrates the usage of the robust tda library [Giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) to do homology computations on synthetically generated point clouds $\mathcal{X}$ corresponding to four different shapes. Subsequently these diagrams are vectorized via the so called `PersistenceEntropy` function. Finally these vectorizations are used as input features in random forest classifier, which classifies our data with a 100\% out-of-bag accuracy.
+The `_demo_TopMLwithGiotto.py` file illustrates the usage of the robust tda library [Giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) to do homology computations on synthetically generated point clouds $\mathcal{X}$ corresponding to four different shapes. Subsequently these diagrams are vectorized via the so called `PersistenceEntropy` function. Finally these vectorizations are used as input features in random forest classifier, which classifies our synthetic data with a 100\% out-of-bag accuracy.
 
 The `_demo_TopMLwithGiotto.ipynb` is a python notebook of the above file that can be run online. 
 
@@ -81,6 +90,8 @@ For the last part of this demo, we consider both families of data points (from p
 ### Topological Machine Learning with Giotto
 
 We sample point clouds from four different manifolds embedded in $\mathbb{r}^3$: a circle, a sphere, a torus and a plane. The machine learning pipeline is able to classify their corresponding persistence entropies with a 100\% out-of-bag accuracy. The whole process is outlined in the file [TopMLwithGiotto.pdf](/TopMLwithGiotto.pdf) which is an excerpt of my response to a question in doctoral comprehensive exam on Topological Data Analysis.
+
+[This python notebook](/_demo_TopMLwithGiotto.ipynb) also contains examples involving 3-d point clouds obtained from real-world data.
 
 # Usage and future work:
 
